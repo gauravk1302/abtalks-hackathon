@@ -34,7 +34,7 @@ const Page = () => {
 
           <div className="relative w-full max-w-[280px] sm:max-w-[340px] aspect-square mt-2 flex items-center justify-center">
             <Image
-              src="/login.svg"
+              src="/Login.svg"
               alt="Login-Image"
               fill
               className="object-contain opacity-95"
