@@ -50,8 +50,8 @@ export function SideCalendar({ streakDates = [] }: SideCalendarProps) {
                 {streak ? (
                   <span className="flex items-center justify-center w-full h-full">
                     {/* Flame icon size scales slightly down on mobile screens */}
-                    <StreakFlameIcon size={18} className="sm:hidden" />
-                    <StreakFlameIcon size={22} className="hidden sm:inline-flex" />
+                    <StreakFlameIcon size={24} className="sm:hidden" />
+                    <StreakFlameIcon size={30} className="hidden sm:inline-flex" />
                   </span>
                 ) : (
                   children
