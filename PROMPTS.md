@@ -116,3 +116,7 @@ Node.js v24.11.1
 D:\New folder (2)\nextcode>"
 
 - "isme images jo diaplay ho rhi hai unko ache se rakhna hai matlab ui de ache se dikhe woh and baki ksi chez ko hat mat lagana h"
+
+- "Purane test data ko clean karne ke liye database mein user document ke completedDates array ya test records ko ek baar reset kar lo."
+
+- "Ensure karo ki side-calender.tsx mein !bg-transparent aur inline backgroundColor: 'transparent' applied hai taaki calendar ka default white highlight override ho jaye."
