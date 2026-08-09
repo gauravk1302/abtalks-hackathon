@@ -22,5 +22,19 @@ export default {
       }
       return true
     },
+    async jwt({ token, user }) {
+      // Sign-in ke waqt user object aata hai, uska id token mein daal do
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Token se id nikalke session.user mein daal do
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
 } satisfies NextAuthConfig

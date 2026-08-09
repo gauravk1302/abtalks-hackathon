@@ -57,7 +57,7 @@ const SignInFormClient = () => {
   return (
     <Card className="w-full max-w-lg rounded-3xl border border-emerald-500/20 bg-zinc-950/95 backdrop-blur-xl">
       <CardHeader className="space-y-3 pb-6">
-        <CardTitle className="text-center text-3xl font-bold tracking-tight text-white">
+        <CardTitle className="text-center text-3xl font-bold tracking-tight text-[#C6EB8B]">
           Sign In
         </CardTitle>
 
@@ -95,14 +95,14 @@ const SignInFormClient = () => {
           By signing in, you agree to our{" "}
           <a
             href="#"
-            className="text-emerald-400 underline underline-offset-4"
+            className="text-[#C6EB8B] underline underline-offset-4"
           >
             Terms of Service
           </a>{" "}
           and{" "}
           <a
             href="#"
-            className="text-emerald-400 underline underline-offset-4"
+            className="text-[#C6EB8B] underline underline-offset-4"
           >
             Privacy Policy
           </a>
