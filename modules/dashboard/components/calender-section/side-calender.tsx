@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Calendar } from '@/components/ui/calendar';
-import { cn } from '@/lib/utils';
-import { StreakFlameIcon } from './streak-flame-icon';
-import { isStreakDay } from './streak-dates';
+import React from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { StreakFlameIcon } from "./streak-flame-icon";
+import { isStreakDay } from "./streak-dates";
 
 interface SideCalendarProps {
   streakDates?: (Date | string)[];
@@ -31,7 +31,13 @@ export function SideCalendar({ streakDates = [] }: SideCalendarProps) {
         // Responsive width handling and text styling for calendar
         className="w-full rounded-2xl border border-white/10 text-white bg-[#0F0E17]/60 p-2 sm:p-3 shadow-inner text-sm sm:text-base max-w-full"
         components={{
-          DayButton: ({ day, className: dayClassName, children, ...buttonProps }: any) => {
+          DayButton: ({
+            day,
+            modifiers,
+            className: dayClassName,
+            children,
+            ...buttonProps
+          }: any) => {
             const currentDate = day?.date || day;
             const streak = isStreakDay(currentDate, streakDates);
 
@@ -39,19 +45,23 @@ export function SideCalendar({ streakDates = [] }: SideCalendarProps) {
               <button
                 type="button"
                 {...buttonProps}
-                style={streak ? { backgroundColor: 'transparent' } : undefined}
+                style={streak ? { backgroundColor: "transparent" } : undefined}
                 className={cn(
                   dayClassName,
                   // Responsive sizing for calendar day boxes (smaller on mobile, standard on sm+)
-                  'h-9 w-9 sm:h-11 sm:w-11 text-xs sm:text-base rounded-lg sm:rounded-xl relative flex items-center justify-center m-auto',
-                  streak && '!bg-transparent p-0 border-none'
+                  "h-9 w-9 sm:h-11 sm:w-11 text-xs sm:text-base rounded-lg sm:rounded-xl relative flex items-center justify-center m-auto",
+                  modifiers?.today && "!text-white font-bold",
+                  streak && "!bg-transparent p-0 border-none",
                 )}
               >
                 {streak ? (
                   <span className="flex items-center justify-center w-full h-full">
                     {/* Flame icon size scales slightly down on mobile screens */}
                     <StreakFlameIcon size={24} className="sm:hidden" />
-                    <StreakFlameIcon size={30} className="hidden sm:inline-flex" />
+                    <StreakFlameIcon
+                      size={30}
+                      className="hidden sm:inline-flex"
+                    />
                   </span>
                 ) : (
                   children
