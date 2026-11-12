@@ -94,8 +94,8 @@ export async function POST(
       status: "completed",
       githubUrl: body.githubUrl,
       linkedinUrl: body.linkedinUrl,
+      imageUrl: body.imageUrl || "",
     },
-    // 👈 FIX: `new: true` deprecated hai, `returnDocument: 'after'` use karo
     { returnDocument: "after" }
   );
 
@@ -114,24 +114,34 @@ export async function POST(
     categoryProgress.currentDay = Math.min(day + 1, 60);
   }
 
-  // Overall streak logic (1 count per calendar day)
+  // ⚡ STREAK & BREAK LOGIC (IST Safe)
   const lastActive = user.lastActiveDate ? new Date(user.lastActiveDate) : null;
+  let streakBroken = false;
 
   if (!lastActive || lastActive.getTime() !== todayIST.getTime()) {
     const yesterday = new Date(todayIST);
     yesterday.setUTCDate(yesterday.getUTCDate() - 1);
 
-    user.currentStreak =
-      lastActive && lastActive.getTime() === yesterday.getTime()
-        ? user.currentStreak + 1
-        : 1;
+    if (lastActive && lastActive.getTime() === yesterday.getTime()) {
+      // Continuous streak maintained
+      user.currentStreak = (user.currentStreak || 0) + 1;
+    } else {
+      // Streak tut gayi hai kyunki beech me gap aa gaya tha ya pehla task hai
+      streakBroken = lastActive !== null; // Agar pehle se koi active date thi aur kal ki nahi thi toh tut gayi
+      user.currentStreak = 1; // Fresh start from 1
+    }
 
-    user.longestStreak = Math.max(user.longestStreak, user.currentStreak);
+    user.longestStreak = Math.max(user.longestStreak || 0, user.currentStreak);
     user.lastActiveDate = todayIST;
   }
 
   user.markModified("categories");
   await user.save();
 
-  return NextResponse.json({ success: true, task });
+  return NextResponse.json({ 
+    success: true, 
+    task, 
+    currentStreak: user.currentStreak,
+    streakBroken 
+  });
 }

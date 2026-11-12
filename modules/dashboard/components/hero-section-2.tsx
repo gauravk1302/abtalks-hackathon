@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TasksPanel from './tasks-section/task-panel';
 import { SideCalendar } from './calender-section/side-calender';
@@ -16,6 +16,31 @@ export function HeroSectionTwo() {
   const [modalData, setModalData] = useState({ title: '', message: '' });
 
   const totalDays = 60;
+
+  // Local date ko 'YYYY-MM-DD' string mein convert karta hai
+  const toDateStr = (d: Date) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+
+  // Streak toota hai ya nahi
+  const isStreakBroken = useMemo(() => {
+    if (streakDates.length === 0) return false; // abhi start hi nahi hui
+
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    const lastCompleted = streakDates
+      .map((d) => d.slice(0, 10))
+      .sort()
+      .at(-1)!;
+
+    // Last completion aaj ya kal ki nahi hai => tut gayi
+    return lastCompleted < toDateStr(yesterday);
+  }, [streakDates]);
 
   const fetchUserProgress = useCallback(async () => {
     try {
@@ -108,7 +133,11 @@ export function HeroSectionTwo() {
                   <SideCalendar streakDates={streakDates} />
                 </div>
                 <div className="w-full">
-                  <StreakSummaryCard currentDay={currentStreak} totalDays={totalDays} />
+                  <StreakSummaryCard
+                    currentDay={isStreakBroken ? 0 : currentStreak}
+                    totalDays={totalDays}
+                    isBroken={isStreakBroken}
+                  />
                 </div>
               </motion.div>
             )}

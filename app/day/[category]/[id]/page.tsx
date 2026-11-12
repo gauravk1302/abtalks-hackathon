@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, use } from "react";
+import { useEffect, useState, use, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle2, Circle } from "lucide-react";
@@ -93,7 +93,18 @@ export default function ChallengeDayPage({
       if (res.ok) {
         const data = await res.json();
         setTask(data.task);
-        alert("Challenge Submitted Successfully! 🎯");
+
+        // 🔄 Real-time calendar & streak update trigger
+        window.dispatchEvent(new Event('progress-updated'));
+
+        if (data.streakBroken) {
+          alert("⚠️ Last Streak Broken!! Don't worry, from now new streak will start. Keep pushing! 🔥");
+        } else {
+          alert("🎯 Challenge Submitted Successfully! Streak maintained! 🔥");
+        }
+      } else {
+        const errData = await res.json();
+        alert(errData.error || "Something went wrong!");
       }
     } catch (err) {
       console.error("Error submitting proof:", err);
